@@ -201,7 +201,7 @@
   //     <hello name="name"/>
   //
   var reactDirective = function($timeout, $injector) {
-    return function(reactComponentName, propNames, conf) {
+    return function(reactComponentName, defaultProps, propNames, conf) {
       var directive = {
         restrict: 'E',
         replace: true,
@@ -213,10 +213,11 @@
 
           // for each of the properties, get their scope value and set it to scope.props
           var renderMyComponent = function() {
-            var props = {};
+            var props = defaultProps || {};
             propNames.forEach(function(propName) {
               props[propName] = scope.$eval(attrs[propName]);
             });
+            console.log('PROPS', props);
             renderComponent(reactComponent, applyFunctions(props, scope), $timeout, elem);
           };
 
