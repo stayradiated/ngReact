@@ -215,9 +215,10 @@
           var renderMyComponent = function() {
             var props = defaultProps || {};
             propNames.forEach(function(propName) {
-              props[propName] = scope.$eval(attrs[propName]);
+              if (attrs.hasOwnProperty(propName)) {
+                props[propName] = scope.$eval(attrs[propName]);
+              }
             });
-            console.log('PROPS', props);
             renderComponent(reactComponent, applyFunctions(props, scope), $timeout, elem);
           };
 
