@@ -219,6 +219,7 @@
                 props[propName] = scope.$eval(attrs[propName]);
               }
             });
+            props.$scope = scope;
             renderComponent(reactComponent, applyFunctions(props, scope), $timeout, elem);
           };
 
