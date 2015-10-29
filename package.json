@@ -1,5 +1,5 @@
 {
-  "name": "ngreact",
+  "name": "@stayradiated/ngreact",
   "author": "https://github.com/davidchang/ngReact/graphs/contributors",
   "scripts": {
     "build": "grunt build",
