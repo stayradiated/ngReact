@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/davidchang/ngReact.svg?branch=master)](https://travis-ci.org/davidchang/ngReact) [![Pair on this](https://tf-assets-staging.s3.amazonaws.com/badges/thinkful_repo_badge.svg)](http://start.thinkful.com/react/?utm_source=github&utm_medium=badge&utm_campaign=ngReact)
+[![Build Status](https://travis-ci.org/ngReact/ngReact.svg?branch=master)](https://travis-ci.org/ngReact/ngReact) [![Pair on this](https://tf-assets-staging.s3.amazonaws.com/badges/thinkful_repo_badge.svg)](http://start.thinkful.com/react/?utm_source=github&utm_medium=badge&utm_campaign=ngReact)
 # ngReact
 
 The [React.js](http://facebook.github.io/react/) library can be used as a view component in web applications. ngReact is an Angular module that allows React Components to be used in [AngularJS](https://angularjs.org/) applications.
@@ -33,6 +33,7 @@ Then, just make sure Angular, React, and ngReact are on the page,
 ```html
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/react/react.js"></script>
+<script src="bower_components/react/react-dom.js"></script>
 <script src="bower_components/ngReact/ngReact.min.js"></script>
 ```
 

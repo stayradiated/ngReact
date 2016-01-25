@@ -121,8 +121,8 @@
   }
 
   // render React component, with scope[attrs.props] being passed in as the component props
-  function renderComponent(component, props, $timeout, elem) {
-    $timeout(function() {
+  function renderComponent(component, props, scope, elem) {
+    scope.$evalAsync(function() {
       ReactDOM.render(React.createElement(component, props), elem[0]);
     });
   }
@@ -146,7 +146,7 @@
   //         }
   //     }));
   //
-  var reactComponent = function($timeout, $injector) {
+  var reactComponent = function($injector) {
     return {
       restrict: 'E',
       replace: true,
@@ -157,7 +157,7 @@
           var scopeProps = scope.$eval(attrs.props);
           var props = applyFunctions(scopeProps, scope);
 
-          renderComponent(reactComponent, props, $timeout, elem);
+          renderComponent(reactComponent, props, scope, elem);
         };
 
         // If there are props, re-render when they change
@@ -167,7 +167,13 @@
 
         // cleanup when scope is destroyed
         scope.$on('$destroy', function() {
-          ReactDOM.unmountComponentAtNode(elem[0]);
+          if (!attrs.onScopeDestroy) {
+            ReactDOM.unmountComponentAtNode(elem[0]);
+          } else {
+            scope.$eval(attrs.onScopeDestroy, {
+              unmountComponent: ReactDOM.unmountComponentAtNode.bind(this, elem[0])
+            });
+          }
         });
       }
     };
@@ -200,7 +206,7 @@
   //
   //     <hello name="name"/>
   //
-  var reactDirective = function($timeout, $injector) {
+  var reactDirective = function($injector) {
     return function(reactComponentName, defaultProps, propNames, conf) {
       var directive = {
         restrict: 'E',
@@ -220,7 +226,7 @@
               }
             });
             props.$scope = scope;
-            renderComponent(reactComponent, applyFunctions(props, scope), $timeout, elem);
+            renderComponent(reactComponent, applyFunctions(props, scope), scope, elem);
           };
 
           // watch each property name and trigger an update whenever something changes,
@@ -235,7 +241,13 @@
 
           // cleanup when scope is destroyed
           scope.$on('$destroy', function() {
-            ReactDOM.unmountComponentAtNode(elem[0]);
+            if (!attrs.onScopeDestroy) {
+              ReactDOM.unmountComponentAtNode(elem[0]);
+            } else {
+              scope.$eval(attrs.onScopeDestroy, {
+                unmountComponent: ReactDOM.unmountComponentAtNode.bind(this, elem[0])
+              });
+            }
           });
         }
       };
@@ -245,6 +257,6 @@
 
   // create the end module without any dependencies, including reactComponent and reactDirective
   return angular.module('react', [])
-    .directive('reactComponent', ['$timeout', '$injector', reactComponent])
-    .factory('reactDirective', ['$timeout','$injector', reactDirective]);
+    .directive('reactComponent', ['$injector', reactComponent])
+    .factory('reactDirective', ['$injector', reactDirective]);
 }));
